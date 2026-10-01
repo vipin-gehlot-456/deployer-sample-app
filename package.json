@@ -1,0 +1,19 @@
+{
+  "name": "sample-task-manager",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "build": "npm run build -w client",
+    "start": "node --require ./server/load-secrets.cjs server/src/index.js",
+    "db:migrate": "node --require ./server/load-secrets.cjs server/src/migrate.js",
+    "dev": "npm run dev -w client",
+    "test": "node --test \"server/test/**/*.test.js\""
+  }
+}

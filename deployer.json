@@ -1,0 +1,4 @@
+{
+  "requiredEnv": ["DATABASE_URL", "SESSION_SECRET"],
+  "optionalEnv": ["MIGRATION_DATABASE_URL", "LOG_LEVEL", "SENTRY_DSN", "VITE_APP_TITLE"]
+}

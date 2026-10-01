@@ -1,0 +1,7 @@
+node_modules/
+client/dist/
+# Real values never go into the repository; .env.example lists the keys.
+.env
+.env.*
+!.env.example
+*.log

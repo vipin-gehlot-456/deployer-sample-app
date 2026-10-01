@@ -1,0 +1,39 @@
+# Deployable Compose definition: API backend, static frontend, one-off migration job.
+# Secrets are passed through from the environment (or *_FILE); none are stored here.
+# Route /api to backend:3000 and everything else to frontend:8080 at the ingress.
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - DATABASE_URL
+      - SESSION_SECRET
+      - LOG_LEVEL
+      - SENTRY_DSN
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["node", "--require", "./server/load-secrets.cjs", "server/src/migrate.js"]
+    environment:
+      - MIGRATION_DATABASE_URL
+      - DATABASE_URL
+    healthcheck:
+      disable: true
+    restart: "no"
+    profiles: ["migrate"]
